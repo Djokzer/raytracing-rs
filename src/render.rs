@@ -20,12 +20,25 @@ impl Render
 		Self {path: path, r_size: img_size, buffer: vec![vec![(0, 0, 0, 255); img_size.0]; img_size.1]}
 	}
 
+	pub fn color_render_test(&mut self)
+	{
+		for i in 0..self.r_size.0
+		{
+			for j in 0..self.r_size.1
+			{
+				self.buffer[i][j].0 = i as u8 % 255;
+				self.buffer[i][j].1 = j as u8 % 255;
+				self.buffer[i][j].2 = 128;
+			}
+		}
+	}
+
 	pub fn buffer_to_1d(&mut self) -> Vec<u8>	
 	{
 		let mut d_array: Vec<u8> = vec![];
-		for i in 0..1024
+		for i in 0..self.r_size.0
 		{
-			for j in 0..1024
+			for j in 0..self.r_size.1
 			{
 				d_array.push(self.buffer[i][j].0);
 				d_array.push(self.buffer[i][j].1);
