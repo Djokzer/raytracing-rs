@@ -40,10 +40,10 @@ impl Render
 		{
 			for j in 0..self.r_size.1
 			{
-				d_array.push(self.buffer[i][j].0);
-				d_array.push(self.buffer[i][j].1);
-				d_array.push(self.buffer[i][j].2);
-				d_array.push(self.buffer[i][j].3);
+				d_array.push(self.buffer[i][j].0);	//R	
+				d_array.push(self.buffer[i][j].1);	//G
+				d_array.push(self.buffer[i][j].2);	//B
+				d_array.push(self.buffer[i][j].3);	//A
 			}
 		}
 		return d_array;
