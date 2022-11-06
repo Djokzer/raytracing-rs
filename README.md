@@ -9,6 +9,10 @@
 cargo run
 ```
 
+## Example
+
+![Sphere Whithout Shading](render/test.png)
+
 ## Resources
 - [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
 - [RAY TRACER FOR THOSE WHO SKIPPED THE MATH CLASS](https://zserge.com/posts/raytracer/)
