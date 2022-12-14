@@ -28,11 +28,6 @@ impl Render
 		{
 			for j in 0..self.r_size.1
 			{
-				/*
-				let mut coord: Vector = Vector::new(2);
-				coord.data[0] = (i as f64) / (self.r_size.0 as f64);
-				coord.data[1] = (j as f64) / (self.r_size.1 as f64);
-				*/
 				let coord: Vector = Vector::new(2, vec![(i as f64) / (self.r_size.0 as f64), (j as f64) / (self.r_size.1 as f64)]);
 
 				self.buffer[i][j].0 = (coord.data[0] * 255.0) as u8;
@@ -48,15 +43,16 @@ impl Render
 		{
 			for x in 0..self.r_size.0
 			{
-				let mut coord: Vector = Vector::new(2, vec![(x as f64) / (self.r_size.0 as f64), (y as f64) / (self.r_size.1 as f64)]);
-				coord.data[0] = coord.data[0] * 2.0 - 1.0;	//0 -> -1
-				coord.data[1] = coord.data[1] * 2.0 - 1.0;	//0 -> -1
+				//let mut coord: Vector = Vector::new(2, vec![(x as f64) / (self.r_size.0 as f64), (y as f64) / (self.r_size.1 as f64)]);
+				let mut coord: Vec<f64> = vec![(x as f64) / (self.r_size.0 as f64), (y as f64) / (self.r_size.1 as f64)];
+				coord[0] = coord[0] * 2.0 - 1.0;	//0 -> -1
+				coord[1] = coord[1] * 2.0 - 1.0;	//0 -> -1
 				self.buffer[x][y] = self.per_pixel(coord);
 			}
 		}
 	}
 
-	pub fn per_pixel(&mut self, coord: Vector) -> (u8, u8, u8, u8)
+	pub fn per_pixel(&mut self, coord: Vec<f64>) -> (u8, u8, u8, u8)
 	{
 		//	Sphere quadratic formula
 		// 	(b.x^2 + b.y^2 + b.z^2) * t^2 + 2*(a.x * b.x + a.y * b.y + a.z * b.z) * t + (a.x^2 + a.y^2 + a.z^2 - r^2) = 0
@@ -66,7 +62,7 @@ impl Render
 		//	t = Hit Distance = Our Variable
 
 		let ray_origin = Vector::new(3, vec![0.0, 0.0, 2.0]);
-		let ray_direction = Vector::new(3, vec![coord.data[0], coord.data[1], -1.0]);
+		let ray_direction = Vector::new(3, vec![coord[0], coord[1], -1.0]);
 		let radius = 0.5;
 
 		//Viete formula

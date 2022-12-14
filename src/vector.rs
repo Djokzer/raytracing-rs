@@ -1,10 +1,12 @@
 use std::{vec};
+use std::ops::{Add, Sub};
 
 pub struct Vector
 {
     pub size : u32,
     pub data : Vec<f64>
 }
+
 
 impl Vector
 {
