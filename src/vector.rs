@@ -1,72 +1,74 @@
-use std::{vec};
-use std::ops::{Add, Sub};
+use std::ops::{Add, Sub, Mul};
 
-pub struct Vector
+#[derive(Copy, Clone)]
+pub struct Vec3
 {
-    pub size : u32,
-    pub data : Vec<f64>
+    pub x : f64,
+    pub y : f64,
+    pub z : f64,
 }
 
-
-impl Vector
+impl Add for Vec3
 {
-    pub fn empty(size : u32) -> Self
+    type Output = Vec3;
+    fn add(self, rhs: Self) -> Vec3
     {
-        Self { size: size, data: vec![0.0; size as usize]}
-    }
-
-    pub fn new(size: u32, vec: Vec<f64>) -> Self
-    {
-        Self { size: size, data: vec}
-    }
-
-    pub fn add(vec1 : &Vector, vec2 : &Vector) -> Vector
-    {
-        let mut vec3 = Vector::empty(vec1.size);
-
-        for i in 0..vec1.size as usize
+        Vec3
         {
-            vec3.data[i] = vec1.data[i] + vec2.data[i];
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
         }
-
-        return vec3;
     }
+}
 
-    pub fn sub(vec1 : &Vector, vec2 : &Vector) -> Vector
+impl Sub for Vec3
+{
+    type Output = Vec3;
+    fn sub(self, rhs: Self) -> Vec3
     {
-        let mut vec3 = Vector::empty(vec1.size);
-
-        for i in 0..vec1.size as usize
+        Vec3
         {
-            vec3.data[i] = vec1.data[i] - vec2.data[i];
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
         }
-
-        return vec3;
     }
-    
-    pub fn mul(vec1 : &Vector, scalar : f64) -> Vector
+}
+
+impl Mul<f64> for Vec3
+{
+    type Output = Vec3;
+    fn mul(self, rhs: f64) -> Vec3
     {
-        let mut vec3 = Vector::empty(vec1.size);
-
-        for i in 0..vec1.size as usize
+        Vec3
         {
-            vec3.data[i] = vec1.data[i] * scalar;
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
         }
-
-        return vec3;
     }
+}
 
-    pub fn dot(vec1 : &Vector, vec2 : &Vector) -> f64
+//DOT PRODUCT
+impl Mul for Vec3
+{
+    type Output = f64;
+    fn mul(self, rhs: Vec3) -> f64
     {
         let mut dot = 0.0;
-
-        for i in 0..vec1.size as usize
-        {
-            dot += vec1.data[i] * vec2.data[i];
-        }
-
+        dot += self.x * rhs.x;
+        dot += self.y * rhs.y;
+        dot += self.z * rhs.z;
         return dot;
     }
-    
-    //TO DO ALL VECTORS OPERATIONS
 }
+
+impl Vec3
+{
+    pub fn new(x: f64, y: f64, z: f64) -> Self
+    {
+        Self { x: x, y: y, z: z}
+    }
+}
+

@@ -5,7 +5,7 @@ use std::path::Path;
 use std::fs::File;
 use std::io::BufWriter;
 use std::vec;
-use crate::vector::Vector;
+use crate::vector::Vec3;
 
 pub struct Render
 {
@@ -21,17 +21,17 @@ impl Render
 		Self {path: path, r_size: img_size, buffer: vec![vec![(0, 0, 0, 255); img_size.0]; img_size.1]}
 	}
 
-	#[cfg(test)]
+	#[allow(dead_code)]
 	pub fn color_render_test(&mut self)
 	{
 		for i in 0..self.r_size.0
 		{
 			for j in 0..self.r_size.1
 			{
-				let coord: Vector = Vector::new(2, vec![(i as f64) / (self.r_size.0 as f64), (j as f64) / (self.r_size.1 as f64)]);
+				let coord: Vec<f64> = vec![(j as f64) / (self.r_size.0 as f64), (i as f64) / (self.r_size.1 as f64)];
 
-				self.buffer[i][j].0 = (coord.data[0] * 255.0) as u8;
-				self.buffer[i][j].1 = (coord.data[1] * 255.0) as u8;
+				self.buffer[i][j].0 = (coord[0] * 255.0) as u8;
+				self.buffer[i][j].1 = (coord[1] * 255.0) as u8;
 				self.buffer[i][j].2 = 128;
 			}
 		}
@@ -60,16 +60,15 @@ impl Render
 		//	b = Ray Direction
 		//	r = Sphere radius
 		//	t = Hit Distance = Our Variable
-
-		let ray_origin = Vector::new(3, vec![0.0, 0.0, 2.0]);
-		let ray_direction = Vector::new(3, vec![coord[0], coord[1], -1.0]);
+		let ray_origin : Vec3 = Vec3::new(0.0, 0.0, 2.0);
+		let ray_direction : Vec3 = Vec3::new(coord[0], coord[1], -1.0);
 		let radius = 0.5;
 
 		//Viete formula
 		//	dt = b^2 - 4 * a * c
-		let a = Vector::dot(&ray_direction, &ray_direction);	
-		let b = 2.0 * Vector::dot(&ray_origin, &ray_direction);
-		let c = Vector::dot(&ray_origin, &ray_origin) - radius*radius;
+		let a :f64 = ray_direction * ray_direction;
+		let b :f64 = 2.0 * (ray_origin * ray_direction);
+		let c :f64 = (ray_origin * ray_origin) - radius*radius;
 
 		let dt = b*b - 4.0 * a * c;
 
