@@ -43,7 +43,6 @@ impl Render
 		{
 			for x in 0..self.r_size.0
 			{
-				//let mut coord: Vector = Vector::new(2, vec![(x as f64) / (self.r_size.0 as f64), (y as f64) / (self.r_size.1 as f64)]);
 				let mut coord: Vec<f64> = vec![(x as f64) / (self.r_size.0 as f64), (y as f64) / (self.r_size.1 as f64)];
 				coord[0] = coord[0] * 2.0 - 1.0;	//0 -> -1
 				coord[1] = coord[1] * 2.0 - 1.0;	//0 -> -1
@@ -62,23 +61,36 @@ impl Render
 		//	t = Hit Distance = Our Variable
 		let ray_origin : Vec3 = Vec3::new(0.0, 0.0, 2.0);
 		let ray_direction : Vec3 = Vec3::new(coord[0], coord[1], -1.0);
-		let radius = 0.5;
+		let radius = 1.0;
 
 		//Viete formula
-		//	dt = b^2 - 4 * a * c
 		let a :f64 = ray_direction * ray_direction;
 		let b :f64 = 2.0 * (ray_origin * ray_direction);
 		let c :f64 = (ray_origin * ray_origin) - radius*radius;
-
-		let dt = b*b - 4.0 * a * c;
-
-		//	IF RAY TOUCHES THE SPHERE
-		if dt >= 0.0
-		{
-			return (70, 180, 160, 255);
-		}
 		
-		return (0, 0, 0, 255);
+		//	dt = b^2 - 4 * a * c
+		let dt = b*b - 4.0 * a * c;	//delta
+		
+		if dt < 0.0	//IF RAY DOES NOT TOUCH THE SPHERE
+		{
+			return Vec3::new(0.0, 0.0, 0.0).to_rgba();
+		}
+
+		// s0, s1 = (-b +- dt.sqrt()) / (2.0 * a)
+		let solution: f64 = (-b - dt.sqrt()) / (2.0 * a);	//MINUS IS THE CLOSEST SOLUTION
+
+		let mut hit_point : Vec3 = ray_origin + ray_direction * solution;
+		let normalized_hp : Vec3 = hit_point.normalize();
+		let light_direction : Vec3 = Vec3::new(1.0, -1.0, -1.0).normalize();
+
+		let lighting : f64 = (normalized_hp * (-light_direction)).max(0.0);
+
+		let color: (u8, u8, u8, u8) = (70, 180, 160, 255);
+
+		let mut vec_color : Vec3 = Vec3::rgb_to_vec3(color);
+		vec_color = vec_color * lighting;
+
+		return vec_color.to_rgba();
 	}
 
 	pub fn buffer_to_1d(&mut self) -> Vec<u8>	
