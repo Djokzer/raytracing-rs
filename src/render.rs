@@ -59,9 +59,9 @@ impl Render
 		//	b = Ray Direction
 		//	r = Sphere radius
 		//	t = Hit Distance = Our Variable
-		let ray_origin : Vec3 = Vec3::new(0.0, 0.0, 2.0);
+		let ray_origin : Vec3 = Vec3::new(0.0, 0.0, 1.0);
 		let ray_direction : Vec3 = Vec3::new(coord[0], coord[1], -1.0);
-		let radius = 1.0;
+		let radius = 0.5;
 
 		//Viete formula
 		let a :f64 = ray_direction * ray_direction;
@@ -81,8 +81,8 @@ impl Render
 
 		let mut hit_point : Vec3 = ray_origin + ray_direction * solution;
 		let normalized_hp : Vec3 = hit_point.normalize();
-		let light_direction : Vec3 = Vec3::new(1.0, -1.0, -1.0).normalize();
 
+		let light_direction : Vec3 = Vec3::new(1.0, -1.0, -1.0).normalize();
 		let lighting : f64 = (normalized_hp * (-light_direction)).max(0.0);
 
 		let color: (u8, u8, u8, u8) = (70, 180, 160, 255);
