@@ -11,7 +11,7 @@ cargo run
 
 ## Example
 
-![Sphere Whithout Shading](render/test.png)
+![Sphere Whithout Shading](render/sphere.png)
 
 ## Resources
 - [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
